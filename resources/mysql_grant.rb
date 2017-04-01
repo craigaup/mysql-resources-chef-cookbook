@@ -7,28 +7,38 @@ property :right, String, name_property: false, required: true
 property :on, String, name_property: false, required: true
 property :admin_user, String, name_property: false, required: true
 property :admin_password, String, name_property: false, required: true
+property :with_grant, [TrueClass, FalseClass], default: false
 
 actions :create, :delete
 default_action :create
 
 action_class do
   def connect_database
-    require 'mysql'
+    require 'mysql2'
     require 'sequel'
 
-    Sequel.connect(
-      "mysql://#{new_resource.admin_user}:#{new_resource.admin_password}@#{new_resource.host}/mysql"
+    conn = Sequel.connect(
+      "mysql2://#{new_resource.admin_user}:#{new_resource.admin_password}@#{new_resource.host}/mysql"
     )
+    return conn unless block_given?
+    yield conn
+    conn.close
   end
-
+  
   def grant
     u = new_resource.user.split('@')
-    connect_database.execute("GRANT #{new_resource.right} ON #{new_resource.on} TO '#{u[0]}'@'#{u[1]}'")
+    w_grant = 'with grant option' if new_resource.with_grant
+    connect_database do |db|
+      db.execute("GRANT #{new_resource.right} ON #{new_resource.on} TO '#{u[0]}'@'#{u[1]}' #{w_grant}")
+    end
   end
 
   def revoke
     u = new_resource.user.split('@')
-    connect_database.execute("REVOKE #{new_resource.right} ON #{new_resource.on} FROM '#{u[0]}'@'#{u[1]}'")
+    w_grant = 'with grant option' if new_resource.with_grant
+    connect_database do |db| 
+      db.execute("REVOKE #{new_resource.right} ON #{new_resource.on} FROM '#{u[0]}'@'#{u[1]}' #{w_grant}")
+    end
   end
 end
 

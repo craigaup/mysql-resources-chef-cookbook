@@ -4,6 +4,9 @@ language: ruby
 
 bundler_args: --without development
 
+cache:
+  bundler: true
+
 services:
   - docker
 
