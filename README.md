@@ -62,3 +62,5 @@ end
 ## Contribute
 
 Open to contributions on [github](https://github.com/marcmillien/mysql-resources-chef-cookbook).
+
+Current build status: [![Build Status](https://travis-ci.org/marcmillien/mysql-resources-chef-cookbook.svg?branch=master)](https://travis-ci.org/marcmillien/mysql-resources-chef-cookbook)

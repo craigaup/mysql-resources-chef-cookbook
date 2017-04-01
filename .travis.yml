@@ -1,0 +1,20 @@
+sudo: required
+
+language: ruby
+
+bundler_args: --without development
+
+services:
+  - docker
+
+rvm:
+  - 2.3.3
+
+gemfile:
+  - Gemfile
+
+branches:
+  only:
+    - master
+
+script: make
