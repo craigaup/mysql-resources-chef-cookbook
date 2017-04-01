@@ -1,0 +1,23 @@
+---
+driver:
+  name: docker
+
+provisioner:
+  name: chef_zero
+  require_chef_omnibus: 12.19
+
+platforms:
+  - name: debian-docker-jessie
+    driver_config:
+      binary: /usr/bin/docker
+      image: debian:jessie
+      username: admin
+      platform: debian
+      use_sudo: false
+
+suites:
+  - name: default
+    run_list:
+      - recipe[mysql-resources::default]
+      - recipe[mysql-resources::_test]
+    attributes:
