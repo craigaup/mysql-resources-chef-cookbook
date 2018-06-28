@@ -5,23 +5,13 @@ property :dbname, String, name_property: true
 property :host, String, name_property: false, required: true
 property :admin_user, String, name_property: false, required: true
 property :admin_password, String, name_property: false, required: true
+property :connector, String, default: 'mysql', desired_state: false
 
 actions :create, :delete
 default_action :create
 
 action_class do
-  def connect_database
-    require 'mysql2'
-    require 'sequel'
-
-    conn = Sequel.connect(
-      "mysql2://#{new_resource.admin_user}:#{new_resource.admin_password}@#{new_resource.host}/mysql"
-    )
-    
-    return conn unless block_given?
-    yield conn
-    conn.close
-  end
+  include MysqlResources::Database
 
   def create_database
     connect_database do |db|
