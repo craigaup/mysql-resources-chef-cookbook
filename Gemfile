@@ -1,6 +1,4 @@
-#ruby=2.3.3-chefmysql
 source 'https://rubygems.org'
-ruby '2.3.3'
 
 gem 'berkshelf', '~> 4.3.5'
 gem 'chef', '~> 12.19.0'

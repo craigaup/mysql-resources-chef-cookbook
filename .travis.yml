@@ -1,23 +1,25 @@
 sudo: required
+dist: trusty
 
-language: ruby
-
-bundler_args: --without development
-
-cache:
-  bundler: true
-
-services:
-  - docker
-
-rvm:
-  - 2.3.3
-
-gemfile:
-  - Gemfile
+addons:
+  apt:
+    sources:
+      - chef-current-trusty
+    packages:
+      - chefdk
 
 branches:
   only:
     - master
+
+services:
+  - docker
+
+before_script:
+  - sudo iptables -L DOCKER || ( echo "DOCKER iptables chain missing" ; sudo iptables -N DOCKER )
+  - eval "$(chef shell-init bash)"
+  - chef --version
+  - cookstyle --version
+  - foodcritic --version
 
 script: make
