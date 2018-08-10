@@ -6,7 +6,7 @@ property :host, String, name_property: false, required: true
 property :right, String, name_property: false, required: true
 property :on, String, name_property: false, required: true
 property :admin_user, String, name_property: false, required: true
-property :admin_password, String, name_property: false, required: true
+property :admin_password, String, name_property: false, required: true, sensitive: true
 property :with_grant, [TrueClass, FalseClass], default: false
 property :connector, String, default: 'mysql', desired_state: false
 property :socket, [String, nil], default: nil, required: false
