@@ -16,13 +16,13 @@ action_class do
 
   def create_database
     connect_database do |db|
-      db.execute("CREATE DATABASE IF NOT EXISTS #{new_resource.dbname}")
+      db.execute("CREATE DATABASE IF NOT EXISTS `#{new_resource.dbname}`")
     end
   end
 
   def drop_database
     connect_database do |db|
-      db.execute("DROP DATABASE IF EXISTS #{new_resource.dbname}")
+      db.execute("DROP DATABASE IF EXISTS `#{new_resource.dbname}`")
     end
   end
 end
