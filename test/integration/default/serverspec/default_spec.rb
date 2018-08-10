@@ -1,13 +1,15 @@
 require 'spec_helper'
 
-describe package 'mysql-client' do
-  it { should be_installed }
+if os[:family] == 'debian'
+  describe package 'mysql-client' do
+    it { should be_installed }
+  end
 end
 
 describe command('/opt/chef/embedded/bin/gem list') do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match(/^mysql \(2\.9\.[0-9]+\)$/) }
-  its(:stdout) { should match(/^sequel \(4\.44\.[0-9]+\)$/) }
+  its(:stdout) { should match(/^ruby-mysql \(2\.9\.[0-9]+\)$/) }
+  its(:stdout) { should match(/^sequel \(5\.10\.[0-9]+\)$/) }
 end
 
 describe command('echo "SHOW DATABASES" | mysql -uroot -ppassword') do

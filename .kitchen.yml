@@ -1,19 +1,27 @@
 ---
-driver:
-  name: docker
-
 provisioner:
   name: chef_zero
-  require_chef_omnibus: 12.19
+  require_chef_omnibus: true
 
 platforms:
   - name: debian-docker-jessie
+    driver:
+      name: docker
     driver_config:
-      binary: /usr/bin/docker
       image: debian:jessie
-      username: admin
       platform: debian
-      use_sudo: false
+  - name: debian-docker-stretch
+    driver:
+      name: docker
+    driver_config:
+      image: debian:stretch
+      platform: debian
+  - name: centos-7.2
+    driver:
+      name: vagrant
+  - name: centos-7.5
+    driver:
+      name: vagrant
 
 suites:
   - name: default

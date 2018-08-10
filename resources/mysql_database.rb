@@ -27,7 +27,6 @@ action_class do
 end
 
 action :create do
-  package 'ruby-mysql'
   create_database
 end
 

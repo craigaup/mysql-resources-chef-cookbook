@@ -8,9 +8,9 @@ Manage mysql databases, users and grants from chef.
 - Chef 12.19
 - Network accessible package repositories
 
-## Plateform support
+## Platform support
 
-- Debian jessie (8) only tested
+- Tested on Debian jessie (8), Debian stretch (9), CentOS 7.2 & 7.5
 
 ## Usage
 
