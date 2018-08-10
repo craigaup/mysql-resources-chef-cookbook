@@ -4,13 +4,13 @@ when 'debian'
   service 'mysql' do
     action :start
   end
-  ENV['MYSQL_UNIX_PORT'] = '/run/mysqld/mysqld.sock'
+  socket_file = '/run/mysqld/mysqld.sock'
 when 'rhel'
   yum_package 'mariadb-server'
   service 'mariadb' do
     action :start
   end
-  ENV['MYSQL_UNIX_PORT'] = '/var/lib/mysql/mysql.sock'
+  socket_file = '/var/lib/mysql/mysql.sock'
 end
 
 bash 'change_root_password' do
@@ -27,12 +27,14 @@ end
 
 mysql_database 'somedb' do
   host 'localhost'
+  socket socket_file
   admin_user 'root'
   admin_password 'password'
 end
 
 mysql_user 'someuser@%' do
   host 'localhost'
+  socket socket_file
   password 'userpass'
   admin_user 'root'
   admin_password 'password'
@@ -40,6 +42,7 @@ end
 
 mysql_grant 'someuser@%' do
   host 'localhost'
+  socket socket_file
   right 'all'
   on 'somedb.*'
   admin_user 'root'

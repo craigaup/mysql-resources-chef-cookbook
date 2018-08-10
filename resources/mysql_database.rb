@@ -4,8 +4,9 @@ provides :mysql_database
 property :dbname, String, name_property: true
 property :host, String, name_property: false, required: true
 property :admin_user, String, name_property: false, required: true
-property :admin_password, String, name_property: false, required: true
+property :admin_password, String, name_property: false, required: true, sensitive: true
 property :connector, String, default: 'mysql', desired_state: false
+property :socket, [String, nil], default: nil, required: false
 
 actions :create, :delete
 default_action :create
@@ -15,13 +16,13 @@ action_class do
 
   def create_database
     connect_database do |db|
-      db.execute("CREATE DATABASE IF NOT EXISTS #{new_resource.dbname}")
+      db.execute("CREATE DATABASE IF NOT EXISTS `#{new_resource.dbname}`")
     end
   end
 
   def drop_database
     connect_database do |db|
-      db.execute("DROP DATABASE IF EXISTS #{new_resource.dbname}")
+      db.execute("DROP DATABASE IF EXISTS `#{new_resource.dbname}`")
     end
   end
 end
