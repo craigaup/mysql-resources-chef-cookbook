@@ -14,6 +14,20 @@ default_action :create
 action_class do
   include MysqlResources::Database
 
+  def hash_password(password)
+    '*' + Digest::SHA1.hexdigest(Digest::SHA1.digest(password)).upcase
+  end
+
+  def sql_version(db)
+    version = ''
+    db[
+      "SELECT VERSION()"
+    ].each do |row|
+      version = row[:'VERSION()'].split('-')[0]
+    end
+    version
+  end
+
   def exist_user?
     u = new_resource.user.split('@')
     size = 0
@@ -30,11 +44,13 @@ action_class do
   def changed_password?
     u = new_resource.user.split('@')
     changed = false
+    new_password = hash_password(new_resource.password)
     connect_database do |db|
+      password_column = Gem::Version.new(sql_version(db)) >= Gem::Version.new('5.7.6') ? 'authentication_string' : 'Password'
       db[
-        "SELECT password AS current_password, PASSWORD('#{new_resource.password}') AS new_password FROM mysql.user WHERE user='#{u[0]}' AND host='#{u[1]}'"
+        "SELECT #{password_column} AS current_password FROM mysql.user WHERE user = :user AND host = :host", { user: u[0], host: u[1] }
       ].each do |row|
-        changed = row[:current_password] || row[:new_password]
+        changed = row[:current_password] || new_password
       end
     end
     changed
@@ -44,7 +60,11 @@ action_class do
     return unless changed_password?
     u = new_resource.user.split('@')
     connect_database do |db|
-      db.execute("set password for '#{u[0]}'@'#{u[1]}' = PASSWORD('#{new_resource.password}')")
+      if Gem::Version.new(sql_version(db)) >= Gem::Version.new('5.7')
+        db.execute("ALTER USER '#{u[0]}'@'#{u[1]}' IDENTIFIED BY '#{new_resource.password}'")
+      else
+        db.execute("SET PASSWORD FOR '#{u[0]}'@'#{u[1]}' = PASSWORD('#{new_resource.password}')")
+      end
     end
   end
 

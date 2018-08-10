@@ -1,7 +1,0 @@
-DEPENDENCIES
-  mysql-resources
-    path: .
-    metadata: true
-
-GRAPH
-  mysql-resources (0.1.0)
