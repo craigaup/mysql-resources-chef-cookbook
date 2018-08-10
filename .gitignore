@@ -12,3 +12,5 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+
+Berksfile.lock
