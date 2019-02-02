@@ -11,7 +11,7 @@ property :with_grant, [TrueClass, FalseClass], default: false
 property :connector, String, default: 'mysql', desired_state: false
 property :socket, [String, nil], default: nil, required: false
 
-actions :create, :delete
+# actions :create, :delete
 default_action :create
 
 action_class do
