@@ -7,16 +7,12 @@
 name 'mysql-resources'
 
 # Where to find external cookbooks:
-default_source :supermarket, "https://supermarket.cobradah.org"
-
 default_source :supermarket
 
 # run_list: chef-client will run these recipes in the order specified.
-run_list 'mysql-resources::default'
-
-named_run_list :testing, 'mysql-resources::_test'
+run_list 'mysql-resources::default', 'mysql-resources::_test'
 
 # Specify a custom source for a single cookbook:
 # cookbook 'example_cookbook', path: '../cookbooks/example_cookbook'
-cookbook "mysql-resources", path: "."
+cookbook 'mysql-resources', path: '.'
 
