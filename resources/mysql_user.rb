@@ -22,7 +22,7 @@ action_class do
   def sql_version(db)
     version = ''
     db[
-      "SELECT VERSION()"
+      'SELECT VERSION()'
     ].each do |row|
       version = row[:'VERSION()'].split('-')[0]
     end

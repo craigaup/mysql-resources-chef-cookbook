@@ -15,4 +15,3 @@ run_list 'mysql-resources::default', 'mysql-resources::_test'
 # Specify a custom source for a single cookbook:
 # cookbook 'example_cookbook', path: '../cookbooks/example_cookbook'
 cookbook 'mysql-resources', path: '.'
-

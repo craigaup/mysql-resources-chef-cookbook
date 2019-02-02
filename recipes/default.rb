@@ -6,7 +6,7 @@ when 'debian'
     ruby-all-dev
     build-essential
   )
-  
+
   pkg_list.push(node['lsb']['codename'] == 'jessie' ? 'libmysqlclient-dev' : 'default-libmysqlclient-dev')
 
   missing_package = false
@@ -18,10 +18,10 @@ when 'debian'
     command 'apt update'
 
     action :run
-    only_if {missing_package}
+    only_if { missing_package }
   end
 
-  pkg_list.each do |package_name| 
+  pkg_list.each do |package_name|
     apt_package package_name do
       action :install
     end
