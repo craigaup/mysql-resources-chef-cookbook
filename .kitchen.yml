@@ -2,30 +2,33 @@
 provisioner:
   name: chef_zero
   require_chef_omnibus: true
+  product_name: chef
+  product_version: 14
 
 platforms:
-  - name: debian-docker-jessie
-    driver:
-      name: docker
-    driver_config:
-      image: debian:jessie
-      platform: debian
-  - name: debian-docker-stretch
-    driver:
-      name: docker
-    driver_config:
-      image: debian:stretch
-      platform: debian
-  - name: centos-7.2
-    driver:
-      name: vagrant
-  - name: centos-7.5
+#  - name: debian-docker-jessie
+#    driver:
+#      name: docker
+#    driver_config:
+#      image: debian:jessie
+#      platform: debian
+#  - name: debian-docker-stretch
+#    driver:
+#      name: docker
+#    driver_config:
+#      image: debian:stretch
+#      platform: debian
+  - name: ubuntu-18.04
     driver:
       name: vagrant
+  - name: centos-7.6
+    driver:
+      name: vagrant
+#   - name: centos-7.5
+#     driver:
+#       name: vagrant
 
 suites:
   - name: default
-    run_list:
-      - recipe[mysql-resources::default]
-      - recipe[mysql-resources::_test]
-    attributes:
+    provisioner:
+      policyfile: Policyfile.rb
