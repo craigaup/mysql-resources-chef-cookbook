@@ -9,7 +9,7 @@ property :admin_password, String, name_property: false, required: true, sensitiv
 property :connector, String, default: 'mysql', desired_state: false
 property :socket, [String, nil], default: nil, required: false
 
-actions :create, :delete
+# actions :create, :delete
 default_action :create
 
 action_class do
@@ -22,7 +22,7 @@ action_class do
   def sql_version(db)
     version = ''
     db[
-      "SELECT VERSION()"
+      'SELECT VERSION()'
     ].each do |row|
       version = row[:'VERSION()'].split('-')[0]
     end
